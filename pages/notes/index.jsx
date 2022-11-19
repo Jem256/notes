@@ -1,11 +1,7 @@
 /** @jsxImportSource theme-ui */
 import Link from 'next/link';
 
-export default function notesIndex() {
-  const notes = new Array(15)
-    .fill(1)
-    .map((e, i) => ({ id: i, title: `This is my note ${i}` }));
-
+export default function notesIndex({ notes }) {
   return (
     <div sx={{ variant: 'containers.page' }}>
       <h1>My Notes</h1>
@@ -34,4 +30,12 @@ export default function notesIndex() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.API_URL}/api/note`);
+  const { data } = await res.json();
+  return {
+    props: { notes: data },
+  };
 }
